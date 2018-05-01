@@ -11,6 +11,8 @@ class SDL(ConanFile):
     description = "Simple DirectMedia Layer is a cross-platform development library designed to provide low level access to audio, keyboard, mouse, joystick, and graphics hardware via OpenGL and Direct3D"
     settings = {"os" : ["Windows"], 
                 "arch": ["x86", "x86_64"]}
+    options = {"shared": [True, False]}
+    default_options = "shared=True"
     
     def source(self):
         site = "https://www.libsdl.org/release/"
@@ -30,7 +32,7 @@ class SDL(ConanFile):
         self.copy("*.txt", src=folderName, dst="")
         
     def package_info(self):
-        self.cpp_info.includedirs   = ["include"]
-        self.cpp_info.libdirs       = ["lib"]
-        self.cpp_info.bindirs       = ["bin"]
-    
+        self.cpp_info.libs = ["SDL2"]
+        if self.options.shared:
+            self.cpp_info.libdirs.append("bin")
+        
